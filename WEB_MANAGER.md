@@ -2,7 +2,7 @@
 
 `web-manager` is the preferred agent role for operating connected websites.
 
-It sits above the low-level Serena site client and uses the reusable `/api/serena/*` contract already installed on compatible sites.
+It sits above the low-level site client and uses the reusable `/api/web-manager/*` contract on compatible sites, with `/api/serena/*` retained only as a compatibility alias where needed.
 
 ## Responsibilities
 
@@ -15,9 +15,9 @@ It sits above the low-level Serena site client and uses the reusable `/api/seren
 - publish approved content
 - revalidate content paths and tags
 
-## Hutton
+## Grayson
 
-When this moves under Hutton, the recommended agent name remains:
+Under Grayson, the canonical agent name is:
 
 - `web-manager`
 

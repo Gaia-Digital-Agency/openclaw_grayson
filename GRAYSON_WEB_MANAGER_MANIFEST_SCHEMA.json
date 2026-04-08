@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grayson.local/schemas/web-manager-manifest.schema.json",
+  "title": "Grayson Web-Manager Site Manifest",
+  "description": "Canonical Grayson manifest for a website managed by web-manager.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "site",
+    "base_url",
+    "api_base_path",
+    "api_secret_ref",
+    "managed_collections",
+    "allowed_capabilities",
+    "environment"
+  ],
+  "properties": {
+    "site": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "description": "Stable short site identifier."
+    },
+    "base_url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https?://",
+      "description": "Base public URL for the website, including any base path root."
+    },
+    "api_base_path": {
+      "type": "string",
+      "default": "/api/web-manager",
+      "pattern": "^/[A-Za-z0-9._~!$&'()*+,;=:@%/-]+$",
+      "description": "Preferred management API base path."
+    },
+    "api_secret_ref": {
+      "type": "string",
+      "pattern": "^secret://[A-Za-z0-9._~!$&'()*+,;=:@%/-]+$",
+      "description": "Secret-store reference used by Grayson to resolve the API secret."
+    },
+    "managed_collections": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": ["pages", "posts", "services"]
+      },
+      "description": "Collections that web-manager is allowed to operate on for this site."
+    },
+    "allowed_capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "auth:verify",
+          "status:read",
+          "pages:write",
+          "posts:write",
+          "services:write",
+          "globals:write",
+          "media:write",
+          "approval:write",
+          "publish:write",
+          "search:read",
+          "revalidate:write"
+        ]
+      },
+      "description": "Capabilities Grayson may expect and invoke for this site."
+    },
+    "environment": {
+      "type": "string",
+      "enum": ["development", "staging", "production"],
+      "description": "Deployment environment classification."
+    },
+    "transport_aliases": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^/[A-Za-z0-9._~!$&'()*+,;=:@%/-]+$"
+      },
+      "default": ["/api/serena"],
+      "description": "Optional legacy-compatible API base paths."
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "publish_requires_approval": {
+          "type": "boolean",
+          "default": true
+        },
+        "allow_global_updates": {
+          "type": "boolean",
+          "default": true
+        },
+        "allow_media_uploads": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "description": "Site-specific policy overrides for web-manager."
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {
+        "type": ["string", "number", "boolean", "null"]
+      },
+      "description": "Optional non-sensitive annotations for operators."
+    }
+  }
+}

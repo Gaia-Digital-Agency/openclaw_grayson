@@ -2,16 +2,16 @@
 
 Preferred public role name: `web-manager`
 
-This workspace now includes a higher-level `website-manager` workflow layer on top of the reusable Serena site client.
+This workspace now includes a higher-level `website-manager` workflow layer on top of the reusable site client.
 
 ## Purpose
 
-`website-manager` is the underlying workflow layer for the preferred `web-manager` role for CMS-backed websites that expose the `/api/serena/*` contract.
+`website-manager` is the underlying workflow layer for the preferred `web-manager` role for CMS-backed websites that expose the `/api/web-manager/*` contract, with `/api/serena/*` available only for compatibility.
 
 It is designed to work:
 
-- under Serena now
-- under Hutton later
+- under the current bridge now
+- under Grayson as the canonical owner
 
 The underlying site contract remains reusable and site-agnostic.
 
@@ -26,9 +26,9 @@ The underlying site contract remains reusable and site-agnostic.
 - publish approved content
 - trigger revalidation
 
-## Hutton Mapping
+## Grayson Mapping
 
-When this moves under Hutton, the recommended role name is:
+Under Grayson, the canonical role name is:
 
 - `web-manager`
 
