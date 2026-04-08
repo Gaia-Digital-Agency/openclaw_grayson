@@ -29,7 +29,7 @@ Verified live capabilities:
 
 The current bridge client exists in:
 
-- `34.143.206.68:/home/azlan/.openclaw/workspace`
+- `/opt/.openclaw-gda/workspace-web-manager`
 
 This includes:
 

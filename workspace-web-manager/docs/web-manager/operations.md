@@ -10,7 +10,7 @@ Default transport base path:
 
 Grayson should load site manifests that validate against:
 
-- [GRAYSON_WEB_MANAGER_MANIFEST_SCHEMA.json](/Users/rogerwoolie/Downloads/gaiada_newai/GRAYSON_WEB_MANAGER_MANIFEST_SCHEMA.json)
+- [docs/web-manager/manifest.schema.json](/Users/rogerwoolie/Downloads/gaiada_newai/docs/web-manager/manifest.schema.json)
 
 ### Canonical Example
 
@@ -45,7 +45,7 @@ Grayson should load site manifests that validate against:
 
 Concrete example file:
 
-- [GRAYSON_WEB_MANAGER_MANIFEST_EXAMPLE.json](/Users/rogerwoolie/Downloads/gaiada_newai/GRAYSON_WEB_MANAGER_MANIFEST_EXAMPLE.json)
+- [docs/web-manager/manifest.example.json](/Users/rogerwoolie/Downloads/gaiada_newai/docs/web-manager/manifest.example.json)
 
 ## Operation Model
 

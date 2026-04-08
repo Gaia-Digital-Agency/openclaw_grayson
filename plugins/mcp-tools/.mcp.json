@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "/home/azlan/.npm-global/bin/mcp-server-filesystem",
+      "args": [
+        "/opt/.openclaw-gda/workspace-main",
+        "/opt/.openclaw-gda/workspace-sales",
+        "/opt/.openclaw-gda/workspace-crm",
+        "/opt/.openclaw-gda/workspace-accounts",
+        "/opt/.openclaw-gda/workspace-socmed",
+        "/opt/.openclaw-gda/workspace-seo",
+        "/opt/.openclaw-gda/workspace-ads",
+        "/opt/.openclaw-gda/workspace-branding"
+      ]
+    },
+    "fetch": {
+      "command": "/home/azlan/.npm-global/bin/mcp-fetch",
+      "args": []
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest", "--headless"]
+    }
+  }
+}

@@ -1,0 +1,216 @@
+{
+  "meta": {
+    "lastTouchedVersion": "2026.4.5",
+    "lastTouchedAt": "2026-04-07T16:05:38.447Z"
+  },
+  "wizard": {
+    "lastRunAt": "2026-04-05T03:03:41.313Z",
+    "lastRunVersion": "2026.4.1",
+    "lastRunCommand": "onboard",
+    "lastRunMode": "local"
+  },
+  "browser": {
+    "enabled": true,
+    "headless": true,
+    "noSandbox": true
+  },
+  "acp": {
+    "defaultAgent": "main"
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "google/gemini-2.5-flash",
+        "fallbacks": [
+          "anthropic/claude-haiku-4-5"
+        ]
+      },
+      "models": {
+        "google/gemini-2.5-flash": {},
+        "anthropic/claude-haiku-4-5": {}
+      },
+      "workspace": "/opt/.openclaw-gda/workspace-main",
+      "memorySearch": {
+        "enabled": true,
+        "sources": [
+          "memory"
+        ],
+        "store": {
+          "path": "/opt/.openclaw-gda/memory/{agentId}.sqlite"
+        }
+      },
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8
+      }
+    },
+    "list": [
+      {
+        "id": "main",
+        "workspace": "/opt/.openclaw-gda/workspace-main",
+        "identity": {
+          "name": "Grayson"
+        },
+        "subagents": {
+          "allowAgents": [
+            "sales",
+            "crm",
+            "accounts",
+            "socmed",
+            "seo",
+            "ads",
+            "branding",
+            "copywriter",
+            "web-manager"
+          ]
+        }
+      },
+      {
+        "id": "sales",
+        "workspace": "/opt/.openclaw-gda/workspace-sales",
+        "identity": {
+          "name": "Sales"
+        }
+      },
+      {
+        "id": "crm",
+        "workspace": "/opt/.openclaw-gda/workspace-crm",
+        "identity": {
+          "name": "CRM"
+        }
+      },
+      {
+        "id": "accounts",
+        "workspace": "/opt/.openclaw-gda/workspace-accounts",
+        "identity": {
+          "name": "Accounts"
+        }
+      },
+      {
+        "id": "socmed",
+        "workspace": "/opt/.openclaw-gda/workspace-socmed",
+        "identity": {
+          "name": "SocMed"
+        }
+      },
+      {
+        "id": "seo",
+        "workspace": "/opt/.openclaw-gda/workspace-seo",
+        "identity": {
+          "name": "SEO"
+        }
+      },
+      {
+        "id": "ads",
+        "workspace": "/opt/.openclaw-gda/workspace-ads",
+        "identity": {
+          "name": "Ads"
+        }
+      },
+      {
+        "id": "branding",
+        "workspace": "/opt/.openclaw-gda/workspace-branding",
+        "identity": {
+          "name": "Branding"
+        }
+      },
+      {
+        "id": "copywriter",
+        "workspace": "/opt/.openclaw-gda/workspace-copywriter",
+        "identity": {
+          "name": "Copywriter"
+        },
+        "groupChat": {
+          "mentionPatterns": [
+            "Copywriter",
+            "@Copywriter",
+            "copywriter"
+          ]
+        }
+      },
+      {
+        "id": "web-manager",
+        "workspace": "/opt/.openclaw-gda/workspace-web-manager",
+        "identity": {
+          "name": "Web Manager"
+        },
+        "groupChat": {
+          "mentionPatterns": [
+            "Web Manager",
+            "@Web Manager",
+            "web-manager",
+            "web manager"
+          ]
+        }
+      }
+    ]
+  },
+  "messages": {
+    "responsePrefix": ""
+  },
+  "gateway": {
+    "mode": "local",
+    "port": 18889,
+    "bind": "loopback",
+    "auth": {
+      "mode": "token",
+      "token": "gda123abc"
+    },
+    "tailscale": {
+      "mode": "off",
+      "resetOnExit": false
+    },
+    "controlUi": {
+      "allowedOrigins": [
+        "https://openclaw.gaiada1.online"
+      ]
+    },
+    "trustedProxies": [
+      "127.0.0.1",
+      "::1"
+    ]
+  },
+  "tools": {
+    "profile": "coding"
+  },
+  "plugins": {
+    "entries": {
+      "google": {
+        "enabled": true
+      },
+      "browser": {
+        "enabled": true
+      },
+      "acpx": {
+        "enabled": true,
+        "config": {}
+      },
+      "anthropic": {
+        "enabled": true
+      }
+    },
+    "load": {
+      "paths": [
+        "/opt/.openclaw-gda/plugins/mcp-tools"
+      ]
+    }
+  },
+  "auth": {
+    "profiles": {
+      "google:default": {
+        "provider": "google",
+        "mode": "api_key"
+      },
+      "anthropic:default": {
+        "provider": "anthropic",
+        "mode": "api_key"
+      }
+    }
+  },
+  "session": {
+    "dmScope": "per-channel-peer"
+  }
+}

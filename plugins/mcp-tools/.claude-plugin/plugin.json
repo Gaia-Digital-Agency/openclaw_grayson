@@ -1,0 +1,6 @@
+{
+  "id": "mcp-tools",
+  "format": "bundle",
+  "bundleFormat": "claude",
+  "bundleCapabilities": ["mcpServers"]
+}
