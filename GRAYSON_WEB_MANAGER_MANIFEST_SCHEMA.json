@@ -64,7 +64,10 @@
           "approval:write",
           "publish:write",
           "search:read",
-          "revalidate:write"
+          "revalidate:write",
+          "workflows:write",
+          "operations:read",
+          "cache:write"
         ]
       },
       "description": "Capabilities Grayson may expect and invoke for this site."
@@ -73,16 +76,6 @@
       "type": "string",
       "enum": ["development", "staging", "production"],
       "description": "Deployment environment classification."
-    },
-    "transport_aliases": {
-      "type": "array",
-      "uniqueItems": true,
-      "items": {
-        "type": "string",
-        "pattern": "^/[A-Za-z0-9._~!$&'()*+,;=:@%/-]+$"
-      },
-      "default": ["/api/serena"],
-      "description": "Optional legacy-compatible API base paths."
     },
     "policy": {
       "type": "object",

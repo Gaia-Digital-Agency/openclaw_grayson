@@ -2,16 +2,15 @@
 
 ## Goal
 
-Move from the current Serena-bridge implementation to a canonical Grayson-owned `web-manager` system without breaking existing website integrations.
+Move from the current bridge implementation to a canonical Grayson-owned `web-manager` system without breaking existing website integrations.
 
 ## Current State
 
 ### Website Side
 
-The `template` website on `34.124.244.233` already exposes the working management contract under both:
+The `template` website on `34.124.244.233` already exposes the working management contract under:
 
-- `/api/web-manager/*` preferred
-- `/api/serena/*` compatibility
+- `/api/web-manager/*`
 
 Verified live capabilities:
 
@@ -61,8 +60,8 @@ Status: ready now
 Actions:
 
 - declare Grayson `web-manager` as the canonical owner
-- treat Serena bridge as temporary tooling only
-- freeze further Serena-specific naming decisions
+- treat the existing bridge as temporary tooling only
+- freeze further legacy naming decisions
 
 ### Phase 2. Lift the Site Registry Into Grayson
 
@@ -101,13 +100,12 @@ Actions:
 
 Deliverable:
 
-- Grayson `web-manager` runtime that no longer depends on the Serena workspace
+- Grayson `web-manager` runtime that no longer depends on the current bridge workspace
 
 ### Phase 4. Introduce Neutral Website Route Aliases
 
 Actions:
 
-- keep `/api/serena/*` working
 - make `/api/web-manager/*` the default route family for all new Grayson clients
 - optionally support `/api/agent/*` later if needed
 
@@ -115,8 +113,6 @@ Recommendation:
 
 - aliases are already in place on the reference site
 - Grayson should now prefer `/api/web-manager/*`
-- keep the old `/api/serena/*` routes until all bridge clients are retired
-
 Deliverable:
 
 - neutral transport naming without breaking existing sites
@@ -165,7 +161,7 @@ Target Grayson state:
 1. Create the Grayson `web-manager` manifest schema.
 2. Create the Grayson `web-manager` operation interface matching the current contract.
 3. Default Grayson manifests to `api_base_path=/api/web-manager`.
-4. Leave the Serena bridge untouched until Grayson is operational.
+4. Leave the current bridge untouched until Grayson is operational.
 
 ## Recommended Deferred Steps
 
@@ -174,14 +170,14 @@ After Grayson `web-manager` is active:
 1. Move site manifests from bridge workspace into Grayson.
 2. Move secrets into Grayson-managed secret storage.
 3. Retire bridge-only docs.
-4. Deprecate `/api/serena/*` naming once all clients are moved.
+4. Remove any remaining legacy naming once all clients are moved.
 
 ## Success Criteria
 
 Migration is complete when:
 
 - Grayson `web-manager` can operate connected sites directly
-- no production workflow depends on the Serena bridge
+- no production workflow depends on the transitional bridge
 - all site manifests live in Grayson
 - secrets are reference-based, not inline
 - `/api/web-manager/*` is the default route family for Grayson clients
@@ -192,5 +188,5 @@ Migration is complete when:
 From this point forward:
 
 - Grayson `web-manager` is the canonical operational owner
-- the current Serena bridge is an implementation bridge only
+- the current bridge is an implementation bridge only
 - the current `template` site is the reference integration, not the final naming authority

@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-from serena_sites import SerenaSiteClient, SerenaSiteError, load_site_config
+from web_manager_sites import WebManagerError, WebManagerSiteClient, load_site_config
 
 
 def load_payload(inline_json: str | None, file_path: str | None) -> dict[str, Any] | None:
@@ -63,6 +63,16 @@ def infer_query(task: str) -> str:
     return lowered
 
 
+def infer_revalidate_tag(collection: str | None) -> str | None:
+    if collection == "pages":
+        return "pages-sitemap"
+    if collection == "posts":
+        return "posts-sitemap"
+    if collection == "services":
+        return "services-list"
+    return None
+
+
 def interpret_task(task: str) -> dict[str, Any]:
     normalized = normalize_text(task)
     lowered = normalized.lower()
@@ -70,10 +80,29 @@ def interpret_task(task: str) -> dict[str, Any]:
     global_slug = infer_global(lowered)
     slug = infer_slug(normalized)
 
+    if "health" in lowered or "ops status" in lowered or "service health" in lowered:
+        return {"action": "health"}
+
     if any(word in lowered for word in ["search", "find", "look for", "look up"]):
         return {
             "action": "search",
             "query": infer_query(normalized),
+        }
+
+    if "publish bundle" in lowered or ("publish" in lowered and "revalidate" in lowered):
+        return {
+            "action": "publish-bundle",
+            "collection": collection or "posts",
+            "slug": slug,
+            "revalidateTag": infer_revalidate_tag(collection or "posts"),
+        }
+
+    if "cache" in lowered or "revalidate" in lowered:
+        return {
+            "action": "cache",
+            "collection": collection,
+            "slug": slug,
+            "revalidateTag": infer_revalidate_tag(collection),
         }
 
     if "publish" in lowered:
@@ -108,35 +137,59 @@ def interpret_task(task: str) -> dict[str, Any]:
     }
 
 
-def run_task(client: SerenaSiteClient, task: str, payload: dict[str, Any] | None) -> dict[str, Any]:
+def run_task(client: WebManagerSiteClient, task: str, payload: dict[str, Any] | None) -> dict[str, Any]:
     plan = interpret_task(task)
     action = plan["action"]
 
     if action == "status":
         return {"plan": plan, "result": client.status()}
 
+    if action == "health":
+        return {"plan": plan, "result": client.health()}
+
     if action == "search":
         return {"plan": plan, "result": client.search(plan["query"])}
 
     if action == "approval":
         if not plan.get("slug"):
-            raise SerenaSiteError("Approval task needs a slug or quoted identifier.")
+            raise WebManagerError("Approval task needs a slug or quoted identifier.")
         return {
             "plan": plan,
             "result": client.request_approval(plan["collection"], slug=plan["slug"]),
         }
 
+    if action == "publish-bundle":
+        if not plan.get("slug"):
+            raise WebManagerError("Publish bundle task needs a slug or quoted identifier.")
+        return {
+            "plan": plan,
+            "result": client.publish_bundle(
+                plan["collection"],
+                slug=plan["slug"],
+                revalidate_tag=plan.get("revalidateTag"),
+            ),
+        }
+
     if action == "publish":
         if not plan.get("slug"):
-            raise SerenaSiteError("Publish task needs a slug or quoted identifier.")
+            raise WebManagerError("Publish task needs a slug or quoted identifier.")
         return {
             "plan": plan,
             "result": client.publish(plan["collection"], slug=plan["slug"]),
         }
 
+    if action == "cache":
+        return {
+            "plan": plan,
+            "result": client.cache(
+                slug=plan.get("slug"),
+                tag=plan.get("revalidateTag"),
+            ),
+        }
+
     if action == "update-global":
         if not payload:
-            raise SerenaSiteError("Global update tasks require --payload-json or --payload-file.")
+            raise WebManagerError("Global update tasks require --payload-json or --payload-file.")
         return {
             "plan": plan,
             "result": client.update_global(plan["global"], payload),
@@ -160,11 +213,11 @@ def run_task(client: SerenaSiteClient, task: str, payload: dict[str, Any] | None
         elif collection == "pages":
             result = client.upsert_page(payload)
         else:
-            raise SerenaSiteError(f"High-level upsert for '{collection}' is not implemented yet.")
+            raise WebManagerError(f"High-level upsert for '{collection}' is not implemented yet.")
 
         return {"plan": plan, "result": result}
 
-    raise SerenaSiteError(f"Unsupported action plan: {action}")
+    raise WebManagerError(f"Unsupported action plan: {action}")
 
 
 def main() -> int:
@@ -176,12 +229,12 @@ def main() -> int:
     args = parser.parse_args()
 
     try:
-        client = SerenaSiteClient(load_site_config(args.site))
+        client = WebManagerSiteClient(load_site_config(args.site))
         payload = load_payload(args.payload_json, args.payload_file)
         result = run_task(client, args.task, payload)
         print(json.dumps(result, indent=2))
         return 0
-    except SerenaSiteError as error:
+    except WebManagerError as error:
         print(str(error))
         return 1
 

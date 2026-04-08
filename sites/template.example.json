@@ -15,7 +15,9 @@
     "approval:write",
     "publish:write",
     "search:read",
-    "revalidate:write"
-  ],
-  "transport_aliases": ["/api/serena"]
+    "revalidate:write",
+    "workflows:write",
+    "operations:read",
+    "cache:write"
+  ]
 }

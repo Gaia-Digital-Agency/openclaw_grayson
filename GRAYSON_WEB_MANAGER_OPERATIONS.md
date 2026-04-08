@@ -6,10 +6,6 @@ Default transport base path:
 
 - `/api/web-manager`
 
-Compatibility transport:
-
-- `/api/serena`
-
 ## Manifest Contract
 
 Grayson should load site manifests that validate against:
@@ -39,7 +35,6 @@ Grayson should load site manifests that validate against:
     "revalidate:write"
   ],
   "environment": "production",
-  "transport_aliases": ["/api/serena"],
   "policy": {
     "publish_requires_approval": true,
     "allow_global_updates": true,
@@ -61,7 +56,7 @@ Each operation should resolve:
 - site manifest
 - secret from `api_secret_ref`
 - target URL as `base_url + api_base_path + route`
-- compatibility fallback only if required
+- no legacy fallback should be assumed
 
 ## Operation Catalog
 
@@ -144,11 +139,11 @@ Internal input:
 {
   "site": "template",
   "payload": {
-    "title": "About Serena",
-    "slug": "about-serena",
+    "title": "About Web Manager",
+    "slug": "about-web-manager",
     "status": "draft",
     "meta": {
-      "title": "About Serena",
+      "title": "About Web Manager",
       "description": "Draft page created by web-manager"
     }
   }
@@ -310,18 +305,11 @@ Examples:
   - `request_approval`
   - `publish_document`
 
-## Fallback Rules
-
-Primary:
+## Transport Rules
 
 - use `api_base_path` from manifest
-
-Fallback:
-
-- if preferred path fails and `transport_aliases` exists, try aliases in order
-- log fallback use for migration visibility
-
-Grayson should not prefer aliases when the primary path is healthy.
+- do not assume or require any legacy alias
+- log any site-specific transport divergence explicitly
 
 ## Output Shape
 

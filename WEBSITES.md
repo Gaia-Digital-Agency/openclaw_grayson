@@ -1,4 +1,4 @@
-# Serena Website Integration
+# Grayson Web-Manager Site Integration
 
 This workspace can manage multiple websites that expose the reusable management contract.
 
@@ -8,8 +8,8 @@ Primary operator role name: `web-manager`
 
 - `sites/*.example.json` - committed manifest templates
 - `sites/*.local.json` - local runtime manifests with secrets
-- `scripts/serena_sites.py` - reusable client library
-- `scripts/serena_site_cli.py` - CLI wrapper for common Serena actions
+- `scripts/web_manager_sites.py` - canonical reusable client library
+- `scripts/web_manager_cli.py` - canonical CLI wrapper
 - `scripts/web_manager.py` - higher-level workflow wrapper for natural tasks
 
 ## Active Website
@@ -19,74 +19,76 @@ The current live starter integration is:
 - `template`
 - base URL: `http://34.124.244.233/template`
 - default API base path: `/api/web-manager`
-- Serena host allowlist: `34.143.206.68`
+- current bridge host allowlist: `34.143.206.68`
 
 ## Quick Start
 
 Verify the live template site:
 
 ```bash
-python3 scripts/serena_site_cli.py verify template
+python3 scripts/web_manager_cli.py verify template
 ```
 
 Search content:
 
 ```bash
-python3 scripts/serena_site_cli.py search template --query serena
+python3 scripts/web_manager_cli.py search template --query template
 ```
 
 Create or update a post from a JSON file:
 
 ```bash
-python3 scripts/serena_site_cli.py upsert-post template --file payloads/post.example.json
+python3 scripts/web_manager_cli.py upsert-post template --file payloads/post.example.json
 ```
 
 Create or update a page from a JSON file:
 
 ```bash
-python3 scripts/serena_site_cli.py upsert-page template --file payloads/page.example.json
+python3 scripts/web_manager_cli.py upsert-page template --file payloads/page.example.json
 ```
 
 Update a global:
 
 ```bash
-python3 scripts/serena_site_cli.py update-global template settings --file payloads/settings.example.json
+python3 scripts/web_manager_cli.py update-global template settings --file payloads/settings.example.json
 ```
 
 Publish a managed document:
 
 ```bash
-python3 scripts/serena_site_cli.py publish template posts --slug yesterday-blog-draft
+python3 scripts/web_manager_cli.py publish-bundle template posts --slug yesterday-blog-draft --revalidate-tag posts-sitemap
 ```
 
 Natural-task wrapper:
 
 ```bash
-python3 scripts/web_manager.py template "search drafts about serena"
-python3 scripts/web_manager.py template "publish serena-blog-smoke-test"
+python3 scripts/web_manager.py template "search drafts about the homepage"
+python3 scripts/web_manager.py template "publish bundle yesterday-blog-draft"
 ```
 
 ## Onboarding Another Similar Website
 
 1. Ensure the website implements the same `/api/web-manager/*` contract.
-2. Copy `sites/template.example.json` to `sites/<site>.local.json`.
-3. Fill in:
-   - `base_url`
-   - `api_base_path`
-   - `api_secret`
-   - `allowed_capabilities`
-4. Verify with:
+2. Generate a manifest:
 
 ```bash
-python3 scripts/serena_site_cli.py verify <site>
+python3 scripts/web_manager_cli.py onboard <site> \
+  --base-url https://example.com \
+  --api-secret replace-me \
+  --local
 ```
 
-5. Run a smoke test:
+3. Verify with:
+
+```bash
+python3 scripts/web_manager_cli.py doctor <site>
+```
+
+4. Run a smoke test:
    - `status`
+   - `health`
    - `search`
    - `approval`
-   - `publish`
+   - `publish-bundle`
 
 This keeps the client transferable across similar Payload/Next websites.
-
-The bridge client now prefers `/api/web-manager/*` by default and only falls back to compatibility aliases such as `/api/serena/*` when necessary.

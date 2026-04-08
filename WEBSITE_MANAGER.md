@@ -6,7 +6,7 @@ This workspace now includes a higher-level `website-manager` workflow layer on t
 
 ## Purpose
 
-`website-manager` is the underlying workflow layer for the preferred `web-manager` role for CMS-backed websites that expose the `/api/web-manager/*` contract, with `/api/serena/*` available only for compatibility.
+`website-manager` is the underlying workflow layer for the preferred `web-manager` role for CMS-backed websites that expose the `/api/web-manager/*` contract.
 
 It is designed to work:
 
@@ -34,20 +34,21 @@ Under Grayson, the canonical role name is:
 
 The current files are already neutral enough to move with minimal change:
 
-- `scripts/serena_sites.py`
-- `scripts/serena_site_cli.py`
+- `scripts/web_manager_sites.py`
+- `scripts/web_manager_cli.py`
 - `scripts/website_manager.py`
 - `sites/*.json`
 
-Only the transport contract name on websites still uses `/api/serena/*`. That can stay for compatibility or later be aliased to a more neutral route family.
+The transport contract uses `/api/web-manager/*` as the canonical website interface.
 
 ## Usage
 
 Examples:
 
 ```bash
-python3 scripts/web_manager.py template "search drafts about serena"
-python3 scripts/web_manager.py template "publish serena-blog-smoke-test"
-python3 scripts/web_manager.py template "check approval for serena-blog-smoke-test"
+python3 scripts/web_manager.py template "search drafts about the homepage"
+python3 scripts/web_manager.py template "publish bundle yesterday-blog-draft"
+python3 scripts/web_manager.py template "check approval for yesterday-blog-draft"
 python3 scripts/web_manager.py template "create a draft post" --payload-file payloads/post.example.json
+python3 scripts/web_manager_cli.py doctor template
 ```

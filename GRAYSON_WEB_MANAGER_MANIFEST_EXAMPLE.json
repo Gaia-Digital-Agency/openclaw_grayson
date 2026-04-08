@@ -15,10 +15,12 @@
     "approval:write",
     "publish:write",
     "search:read",
-    "revalidate:write"
+    "revalidate:write",
+    "workflows:write",
+    "operations:read",
+    "cache:write"
   ],
   "environment": "production",
-  "transport_aliases": ["/api/serena"],
   "policy": {
     "publish_requires_approval": true,
     "allow_global_updates": true,

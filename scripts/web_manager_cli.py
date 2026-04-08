@@ -4,7 +4,16 @@ import argparse
 import json
 from pathlib import Path
 
-from serena_sites import SerenaSiteClient, SerenaSiteError, load_site_config
+from web_manager_sites import (
+    DEFAULT_ALLOWED_CAPABILITIES,
+    DEFAULT_MANAGED_COLLECTIONS,
+    WebManagerError,
+    WebManagerSiteClient,
+    build_site_manifest,
+    load_site_config,
+    validate_site_config,
+    write_site_manifest,
+)
 
 
 def load_json_payload(inline_json: str | None, file_path: str | None) -> dict:
@@ -12,15 +21,15 @@ def load_json_payload(inline_json: str | None, file_path: str | None) -> dict:
         return json.loads(inline_json)
     if file_path:
         return json.loads(Path(file_path).read_text())
-    raise SerenaSiteError("Provide either --json or --file.")
+    raise WebManagerError("Provide either --json or --file.")
 
 
-def build_client(site: str) -> SerenaSiteClient:
-    return SerenaSiteClient(load_site_config(site))
+def build_client(site: str) -> WebManagerSiteClient:
+    return WebManagerSiteClient(load_site_config(site))
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Serena website management CLI")
+    parser = argparse.ArgumentParser(description="Grayson web-manager CLI")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     verify = subparsers.add_parser("verify")
@@ -28,6 +37,12 @@ def main() -> int:
 
     status = subparsers.add_parser("status")
     status.add_argument("site")
+
+    health = subparsers.add_parser("health")
+    health.add_argument("site")
+
+    doctor = subparsers.add_parser("doctor")
+    doctor.add_argument("site")
 
     search = subparsers.add_parser("search")
     search.add_argument("site")
@@ -65,11 +80,28 @@ def main() -> int:
     publish_group.add_argument("--slug")
     publish.add_argument("--skip-approval", action="store_true")
 
+    publish_bundle = subparsers.add_parser("publish-bundle")
+    publish_bundle.add_argument("site")
+    publish_bundle.add_argument("collection")
+    publish_bundle_group = publish_bundle.add_mutually_exclusive_group(required=True)
+    publish_bundle_group.add_argument("--id")
+    publish_bundle_group.add_argument("--slug")
+    publish_bundle.add_argument("--revalidate-path")
+    publish_bundle.add_argument("--revalidate-tag")
+
     revalidate = subparsers.add_parser("revalidate")
     revalidate.add_argument("site")
     revalidate.add_argument("--path")
     revalidate.add_argument("--slug")
     revalidate.add_argument("--tag")
+
+    cache = subparsers.add_parser("cache")
+    cache.add_argument("site")
+    cache.add_argument("--path")
+    cache.add_argument("--slug")
+    cache.add_argument("--tag")
+    cache.add_argument("--paths", nargs="*")
+    cache.add_argument("--tags", nargs="*")
 
     upload = subparsers.add_parser("upload-media")
     upload.add_argument("site")
@@ -77,15 +109,56 @@ def main() -> int:
     upload.add_argument("--alt")
     upload.add_argument("--folder")
 
+    onboard = subparsers.add_parser("onboard")
+    onboard.add_argument("site")
+    onboard.add_argument("--base-url", required=True)
+    onboard.add_argument("--api-secret", required=True)
+    onboard.add_argument("--api-base-path", default="/api/web-manager")
+    onboard.add_argument("--local", action="store_true")
+    onboard.add_argument("--force", action="store_true")
+    onboard.add_argument("--managed-collections", nargs="*", default=DEFAULT_MANAGED_COLLECTIONS)
+    onboard.add_argument("--allowed-capabilities", nargs="*", default=DEFAULT_ALLOWED_CAPABILITIES)
+
     args = parser.parse_args()
 
     try:
+        if args.command == "onboard":
+            manifest = build_site_manifest(
+                site=args.site,
+                base_url=args.base_url,
+                api_secret=args.api_secret,
+                api_base_path=args.api_base_path,
+                managed_collections=list(args.managed_collections),
+                allowed_capabilities=list(args.allowed_capabilities),
+            )
+            path = write_site_manifest(
+                site=args.site,
+                manifest=manifest,
+                local=args.local,
+                force=args.force,
+            )
+            print(json.dumps({"ok": True, "site": args.site, "path": str(path), "manifest": manifest}, indent=2))
+            return 0
+
         client = build_client(args.site)
 
         if args.command == "verify":
             result = client.verify()
         elif args.command == "status":
             result = client.status()
+        elif args.command == "health":
+            result = client.health()
+        elif args.command == "doctor":
+            issues = validate_site_config(load_site_config(args.site))
+            result = {
+                "ok": len(issues) == 0,
+                "site": args.site,
+                "manifestIssues": issues,
+                "config": client.describe_local_config(),
+                "verify": client.verify(),
+                "status": client.status(),
+                "health": client.health(),
+            }
         elif args.command == "search":
             result = client.search(args.query, args.limit)
         elif args.command == "upsert-page":
@@ -103,16 +176,32 @@ def main() -> int:
                 slug=args.slug,
                 require_approval=not args.skip_approval,
             )
+        elif args.command == "publish-bundle":
+            result = client.publish_bundle(
+                args.collection,
+                doc_id=args.id,
+                slug=args.slug,
+                revalidate_path=args.revalidate_path,
+                revalidate_tag=args.revalidate_tag,
+            )
         elif args.command == "revalidate":
             result = client.revalidate(path=args.path, slug=args.slug, tag=args.tag)
+        elif args.command == "cache":
+            result = client.cache(
+                path=args.path,
+                slug=args.slug,
+                tag=args.tag,
+                paths=args.paths,
+                tags=args.tags,
+            )
         elif args.command == "upload-media":
             result = client.upload_media(args.file_path, alt=args.alt, folder=args.folder)
         else:
-            raise SerenaSiteError(f"Unsupported command: {args.command}")
+            raise WebManagerError(f"Unsupported command: {args.command}")
 
         print(json.dumps(result, indent=2))
         return 0
-    except SerenaSiteError as error:
+    except WebManagerError as error:
         print(str(error))
         return 1
 

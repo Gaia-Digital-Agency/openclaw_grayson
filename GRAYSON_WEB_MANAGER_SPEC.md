@@ -6,7 +6,7 @@
 
 It is responsible for structured website operations across multiple similar CMS-backed sites, especially Payload + Next.js sites that expose a standard management API.
 
-This is the canonical role definition. Existing Serena-oriented tooling should be treated only as an interim bridge into this Grayson-owned model.
+This is the canonical role definition. Existing bridge tooling should be treated only as a transitional implementation on the path to this Grayson-owned model.
 
 ## Scope
 
@@ -64,16 +64,11 @@ Preferred route family:
 
 - `/api/web-manager/*`
 
-Compatibility route family:
-
-- `/api/serena/*`
-
 Optional future neutral alternative:
 
 - `/api/agent/*`
 
 Grayson `web-manager` should prefer `/api/web-manager/*` by default.
-The `/api/serena/*` prefix is compatibility transport only and should not be treated as canonical identity.
 
 ## Required Website Contract
 
@@ -89,10 +84,6 @@ A compatible website must expose:
 - `POST /api/web-manager/publish`
 - `GET /api/web-manager/content/search`
 - `POST /api/web-manager/revalidate`
-
-Compatibility support:
-
-- websites may continue exposing equivalent `/api/serena/*` routes during migration
 
 Optional future endpoints:
 
@@ -202,7 +193,7 @@ Canonical manifest fields:
 Note:
 
 - committed examples should never store live secrets
-- local bridge manifests may temporarily contain raw secrets during migration
+- local manifests may temporarily contain raw secrets during migration
 - Grayson should move to secret references as the canonical model
 - Grayson manifests should default `api_base_path` to `/api/web-manager`
 
