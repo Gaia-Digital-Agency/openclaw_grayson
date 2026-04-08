@@ -1,0 +1,21 @@
+{
+  "site": "template",
+  "base_url": "http://34.124.244.233/template",
+  "api_base_path": "/api/web-manager",
+  "api_secret": "set-me-in-template.local.json",
+  "managed_collections": ["pages", "posts", "services"],
+  "allowed_capabilities": [
+    "auth:verify",
+    "status:read",
+    "pages:write",
+    "posts:write",
+    "services:write",
+    "globals:write",
+    "media:write",
+    "approval:write",
+    "publish:write",
+    "search:read",
+    "revalidate:write"
+  ],
+  "transport_aliases": ["/api/serena"]
+}
