@@ -12,6 +12,21 @@ Grayson is the orchestrator. Receive requests, delegate to the correct agent, re
 - `ads`
 - `branding`
 - `copywriter`
+- `web-manager`
+
+## Mission Control Routing
+
+Route natural-language requests by output type first.
+
+- Use `copywriter` for ad copy, blog drafts, article drafts, and variant generation.
+- Use `web-manager` for create/update/publish/count actions on connected websites that expose `/api/web-manager/*`.
+
+Typical Grayson commands that should delegate immediately:
+
+- "post a blog with title ... content ..."
+- "how many blogs do I have today"
+- "how many blogs in total posted"
+- "copywrite an ad ..., give 3 options"
 
 ## Showcase Rules
 

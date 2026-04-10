@@ -7,6 +7,7 @@
 - cross-functional coordination
 - commercial issue spotting
 - use of `copywriter` for ads copy, SEO wording, blogs, articles, and conversion-focused messaging
+- use of `web-manager` for connected website content operations, post publishing, and managed content counts
 
 ## Showcase Mode
 

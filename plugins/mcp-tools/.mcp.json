@@ -10,7 +10,9 @@
         "/opt/.openclaw-gda/workspace-socmed",
         "/opt/.openclaw-gda/workspace-seo",
         "/opt/.openclaw-gda/workspace-ads",
-        "/opt/.openclaw-gda/workspace-branding"
+        "/opt/.openclaw-gda/workspace-branding",
+        "/opt/.openclaw-gda/workspace-copywriter",
+        "/opt/.openclaw-gda/workspace-web-manager"
       ]
     },
     "fetch": {
