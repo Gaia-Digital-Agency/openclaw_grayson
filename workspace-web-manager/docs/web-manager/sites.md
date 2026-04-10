@@ -17,7 +17,7 @@ Primary operator role name: `web-manager`
 The current live starter integration is:
 
 - `template`
-- base URL: `http://34.124.244.233/template`
+- base URL: `http://34.124.244.233/templategda`
 - default API base path: `/api/web-manager`
 - current bridge host allowlist: `34.143.206.68`
 

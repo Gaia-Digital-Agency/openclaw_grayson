@@ -17,9 +17,9 @@ Grayson should load site manifests that validate against:
 ```json
 {
   "site": "template",
-  "base_url": "http://34.124.244.233/template",
+  "base_url": "http://34.124.244.233/templategda",
   "api_base_path": "/api/web-manager",
-  "api_secret_ref": "secret://grayson/sites/template",
+  "api_secret_ref": "secret://grayson/sites/templategda",
   "managed_collections": ["pages", "posts", "services"],
   "allowed_capabilities": [
     "auth:verify",
@@ -320,7 +320,7 @@ At the Grayson layer, operations should return a normalized envelope:
   "site": "template",
   "operation": "publish_document",
   "transport": {
-    "base_url": "http://34.124.244.233/template",
+    "base_url": "http://34.124.244.233/templategda",
     "api_base_path": "/api/web-manager"
   },
   "result": {}

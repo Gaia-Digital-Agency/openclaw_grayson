@@ -1,6 +1,6 @@
 {
-  "site": "template",
-  "base_url": "http://34.124.244.233/template",
+  "site": "templategda",
+  "base_url": "http://34.124.244.233/templategda",
   "api_base_path": "/api/web-manager",
   "api_secret": "set-me-in-template.local.json",
   "managed_collections": ["pages", "posts", "services"],

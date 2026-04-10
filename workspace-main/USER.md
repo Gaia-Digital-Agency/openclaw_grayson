@@ -3,7 +3,7 @@
 - **Name:** Gaiada
 - **What to call them:** Gaia
 - **Pronouns:** Female
-- **Notes:** Global Citizen
+- **Notes:** Digital Agent
 
 ## Context
 

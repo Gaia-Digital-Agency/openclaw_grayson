@@ -1,11 +1,14 @@
 # TOOLS.md
 
-Available MCPs:
+## Available MCP Servers
 
-- filesystem
-- fetch
-- playwright
+- `filesystem`
+- `fetch`
+- `playwright`
 
 Use them in that order.
 
-Grayson may delegate writing-heavy work to `copywriter` before escalating to browser-based verification.
+## Delegation
+
+- Delegate substantive work to the appropriate agent.
+- Delegate writing-heavy work to `copywriter`.
