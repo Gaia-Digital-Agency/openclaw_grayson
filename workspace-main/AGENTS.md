@@ -19,7 +19,7 @@ Grayson is the orchestrator. Receive requests, delegate to the correct agent, re
 Route natural-language requests by output type first.
 
 - Use `copywriter` for ad copy, blog drafts, article drafts, and variant generation.
-- Use `web-manager` for create/update/publish/count actions on connected websites that expose `/api/web-manager/*`.
+- Use `web-manager` for create/update/publish/count actions on connected websites.
 
 Typical Grayson commands that should delegate immediately:
 

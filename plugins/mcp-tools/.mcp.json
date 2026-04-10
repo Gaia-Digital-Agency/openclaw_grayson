@@ -11,8 +11,8 @@
         "/opt/.openclaw-gda/workspace-seo",
         "/opt/.openclaw-gda/workspace-ads",
         "/opt/.openclaw-gda/workspace-branding",
-        "/opt/.openclaw-gda/workspace-copywriter",
-        "/opt/.openclaw-gda/workspace-web-manager"
+        "/opt/.openclaw-gda/workspace-web-manager",
+        "/opt/.openclaw-gda/workspace-copywriter"
       ]
     },
     "fetch": {

@@ -12,4 +12,4 @@ Use them in that order.
 
 - Delegate substantive work to the appropriate agent.
 - Delegate writing-heavy work to `copywriter`.
-- Delegate connected website publish/search/count work to `web-manager`.
+- Delegate blog posts, website content, CMS operations, publish/search/count to `web-manager`.
