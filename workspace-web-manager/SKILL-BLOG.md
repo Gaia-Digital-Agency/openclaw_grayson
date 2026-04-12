@@ -4,8 +4,8 @@ Use this skill when asked to create, list, or manage blog posts on the Payload C
 
 ## CMS Connection
 
-- Base URL: http://templatehos.gaiada.online
-- API base: http://templatehos.gaiada.online/api
+- Base URL: http://templategen.gaiada.online
+- API base: http://templategen.gaiada.online/api
 - Login: POST /api/users/login
 - Posts: POST /api/posts (create), GET /api/posts (list)
 - Media: POST /api/media (multipart upload)
@@ -21,7 +21,7 @@ Use the `fetch` MCP tool to login and obtain a JWT token.
 
 Request:
 - Method: POST
-- URL: http://templatehos.gaiada.online/api/users/login
+- URL: http://templategen.gaiada.online/api/users/login
 - Headers: Content-Type: application/json
 - Body: {"email":"demo-author@example.com","password":"password"}
 
@@ -33,7 +33,7 @@ Use the `fetch` MCP tool to create the post.
 
 Request:
 - Method: POST
-- URL: http://templatehos.gaiada.online/api/posts
+- URL: http://templategen.gaiada.online/api/posts
 - Headers:
   - Content-Type: application/json
   - Authorization: JWT <token>
@@ -77,13 +77,13 @@ When asked to use a generic or placeholder image, set `heroImage` to `null` (ski
 
 After successful creation, respond to the user with:
 - The post title
-- The post URL: http://templatehos.gaiada.online/posts/<slug>
+- The post URL: http://templategen.gaiada.online/posts/<slug>
 - The post ID from the API response
 
 ## Listing and Counting Posts
 
 To list or count posts:
-- GET http://templatehos.gaiada.online/api/posts
+- GET http://templategen.gaiada.online/api/posts
 - To filter by date, use the `publishedAt` field with query params:
   - Today's posts: GET /api/posts?where[publishedAt][greater_than]=YYYY-MM-DDT00:00:00.000Z
 - The response includes `totalDocs` for counting.
